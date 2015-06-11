@@ -16,15 +16,16 @@ class puppetdb::params {
   $manage_dbserver           = true
 
   # The remaining database settings are not used for an embedded database
-  $database_host      = 'localhost'
-  $database_port      = '5432'
-  $database_name      = 'puppetdb'
-  $database_username  = 'puppetdb'
-  $database_password  = 'puppetdb'
-  $database_ssl       = false
-  $database_validate  = true
-  $postgres_version   = '9.4'
-  $manage_pg_repo     = false
+  $database_host          = 'localhost'
+  $database_port          = '5432'
+  $database_name          = 'puppetdb'
+  $database_username      = 'puppetdb'
+  $database_password      = 'puppetdb'
+  $database_ssl           = false
+  $database_validate      = true
+  $database_embedded_path = '/opt/puppetlabs/server/data/puppetdb/db/db'
+  $postgres_version       = '9.4'
+  $manage_pg_repo         = false
 
   # These settings manage the various auto-deactivation and auto-purge settings
   $node_ttl               = '0s'
@@ -65,55 +66,48 @@ class puppetdb::params {
   $puppetdb_user        = 'puppetdb'
   $puppetdb_group       = 'puppetdb'
   $masterless           = false
+  $puppet_service_name  = 'puppetserver'
 
   case $::osfamily {
     'RedHat', 'Suse', 'Archlinux': {
-      $confdir                = '/etc/puppetdb/conf.d'
-      $database_embedded_path = '/var/lib/puppetdb/db/db'
+      $confdir                = '/etc/puppetlabs/puppetdb/conf.d'
       $puppetdb_initconf      = '/etc/sysconfig/puppetdb'
       if $settings::confdir != undef {
         $puppet_confdir       = $settings::confdir
       } else {
-        $puppet_confdir       = '/etc/puppet'
+        $puppet_confdir       = '/etc/puppetlabs/puppet'
       }
-      $puppet_service_name    = 'puppetmaster'
-      $ssl_dir                = '/etc/puppetdb/ssl'
+      $ssl_dir                = '/etc/puppetlabs/puppetdb/ssl'
     }
     'Debian': {
-      $confdir                = '/etc/puppetdb/conf.d'
-      $database_embedded_path = '/var/lib/puppetdb/db/db'
+      $confdir                = '/etc/puppetlabs/puppetdb/conf.d'
       $puppetdb_initconf      = '/etc/default/puppetdb'
       if $settings::confdir != undef {
         $puppet_confdir       = $settings::confdir
       } else {
-        $puppet_confdir       = '/etc/puppet'
+        $puppet_confdir       = '/etc/puppetlabs/puppet'
       }
-      $puppet_service_name    = 'puppetmaster'
-      $ssl_dir                = '/etc/puppetdb/ssl'
+      $ssl_dir                = '/etc/puppetlabs/puppetdb/ssl'
     }
     'OpenBSD': {
-      $confdir                = '/etc/puppetdb/conf.d'
-      $database_embedded_path = '/var/db/puppetdb/db/db'
+      $confdir                = '/etc/puppetlabs/puppetdb/conf.d'
       $puppetdb_initconf      = undef
       if $settings::confdir != undef {
         $puppet_confdir       = $settings::confdir
       } else {
-        $puppet_confdir       = '/etc/puppet'
+        $puppet_confdir       = '/etc/puppetlabs/puppet'
       }
-      $puppet_service_name    = 'puppetmasterd'
-      $ssl_dir                = '/etc/puppetdb/ssl'
+      $ssl_dir                = '/etc/puppetlabs/puppetdb/ssl'
     }
     'FreeBSD': {
-      $confdir                = '/usr/local/etc/puppetdb/conf.d'
-      $database_embedded_path = '/var/db/puppetdb/db/db'
+      $confdir                = '/usr/local/etc/puppetlabs/puppetdb/conf.d'
       $puppetdb_initconf      = undef
       if $settings::confdir != undef {
         $puppet_confdir       = $settings::confdir
       } else {
-        $puppet_confdir       = '/usr/local/etc/puppet'
+        $puppet_confdir       = '/usr/local/etc/puppetlabs/puppet'
       }
-      $puppet_service_name    = 'puppetmaster'
-      $ssl_dir                = '/usr/local/etc/puppetdb/ssl'
+      $ssl_dir                = '/usr/local/etc/puppetlabs/puppetdb/ssl'
     }
     default: {
       fail("${module_name} does not support your osfamily ${::osfamily}")
