@@ -18,7 +18,7 @@ class puppetdb::master::puppetdb_conf (
 
   ini_setting { 'puppetdbserver_urls':
     setting => 'server_urls',
-    value   => "https://#{server}:#{port}/",
+    value   => "https://${server}:${port}/",
   }
 
   ini_setting { 'soft_write_failure':
