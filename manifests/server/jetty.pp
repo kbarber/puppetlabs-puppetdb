@@ -29,7 +29,7 @@ class puppetdb::server::jetty (
     path    => "${confdir}/jetty.ini",
     ensure  => present,
     section => 'jetty',
-    require => File["${confdir}/puppetdb.ini"],
+    require => File["${confdir}/jetty.ini"],
   }
 
   $cleartext_setting_ensure = $disable_cleartext ? {
